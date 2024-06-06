@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(50)
+  password   String    @db.VarChar(256)
+  is_admin   Boolean   @default(false)
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  updated_at DateTime  @updatedAt @db.Timestamp(0)
+  address    address[]
+}
+
+model address {
+  id         Int      @id @default(autoincrement())
+  first_name String?  @db.VarChar(20)
+  last_name  String?  @db.VarChar(20)
+  mobile     String?  @unique @db.VarChar(10)
+  country    String?  @db.VarChar(20)
+  address    String?  @db.VarChar(100)
+  district   String?  @db.VarChar(20)
+  province   String?  @db.VarChar(20)
+  codepost   String?  @db.VarChar(5)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @updatedAt @db.Timestamp(0)
+  user_id    Int
+  user       user     @relation(fields: [user_id], references: [id])
+}
+
+model category {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(50)
+  product product[]
+}
+
+model product {
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(50)
+  description  String         @db.VarChar(100)
+  details      String         @db.Text
+  popular      Int
+  created_at   DateTime       @default(now()) @db.Timestamp(0)
+  updated_at   DateTime       @updatedAt @db.Timestamp(0)
+  is_dalete    Boolean        @default(false)
+  category_id  Int
+  category     category       @relation(fields: [category_id], references: [id])
+  product_type product_type[]
+  image        image[]
+  cart_item    cart_item[]
+}
+
+model product_type {
+  id         Int         @id @default(autoincrement())
+  naem       coffee_tool
+  price      Int
+  stock      Int
+  created_at DateTime    @default(now()) @db.Timestamp(0)
+  updated_at DateTime    @updatedAt @db.Timestamp(0)
+  product_id Int
+  product    product     @relation(fields: [product_id], references: [id])
+}
+
+enum coffee_tool {
+  ONE_HUNDRED
+  TWO_HUNDRED_FIFTY
+  FIVE_HUNDRED
+  TOOL
+}
+
+model image {
+  id         Int       @id @default(autoincrement())
+  image      String?   @db.VarChar(0)
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  updated_at DateTime  @updatedAt @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+  product_id Int
+  product    product   @relation(fields: [product_id], references: [id])
+}
+
+model cart {
+  id         Int         @id @default(autoincrement())
+  is_delete  Boolean     @default(false)
+  created_at DateTime    @default(now()) @db.Timestamp(0)
+  updated_at DateTime    @updatedAt @db.Timestamp(0)
+  cart_item  cart_item[]
+}
+
+model cart_item {
+  id         Int     @id @default(autoincrement())
+  quantity   Int?
+  cart_id    Int
+  product_id Int
+  cart       cart    @relation(fields: [cart_id], references: [id])
+  product    product @relation(fields: [product_id], references: [id])
+}
+
+model order {
+  id         Int          @id @default(autoincrement())
+  image      String
+  date       DateTime     @db.Timestamp(0)
+  hour       Int
+  minute     Int
+  status     order_status @default(PENDING)
+  crated_at  DateTime     @default(now()) @db.Timestamp(0)
+  updated_at DateTime     @updatedAt @db.Timestamp(0)
+}
+
+enum order_status {
+  PENDING
+  SUCCESSED
+  FAILED
+}
