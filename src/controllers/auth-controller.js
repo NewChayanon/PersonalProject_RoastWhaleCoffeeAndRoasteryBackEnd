@@ -34,7 +34,7 @@ authController.login = async (req, res, next) => {
       return res.status(400).json({msg:'Invalid Credentials'})
     }
     const accessToken = jwtService.createToken({id:searchEmail.id})
-    res.status(200).json({accessToken})
+    res.json({accessToken})
   } catch (error) {
     console.log(error);
   }
