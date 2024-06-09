@@ -31,4 +31,9 @@ productService.addImage = (data, product_id) =>
       await prisma.image.create({ data: { image: el.image, product_id } })
   );
 
+productService.deleteProduct = (productId) =>
+  prisma.product.update({
+    data: { is_delete: true },
+    where: { id: productId },
+  });
 module.exports = productService;

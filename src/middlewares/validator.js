@@ -7,7 +7,8 @@ const { addProduct } = require("./joi-validator.js/stock-validator");
 exports.registerValidator = (req, res, next) => {
   const { value, error } = registerSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ msg: error.details[0].message });
+    error.statusCode = 400
+    return next(error)
   }
   req.input = value;
   next();

@@ -5,7 +5,10 @@ const { addProductValidator } = require('../middlewares/validator')
 const { isAdmin } = require('../middlewares/isAdmin')
 const stockRouter = express.Router()
 
-// add product
+// add product - Validation /Authentication
 stockRouter.post('/add-product-coffee',authenticate,addProductValidator,isAdmin,stockController.addProduct)
+
+// delete product - Authentication (soft delete)
+stockRouter.delete('/remove-product/:productId',authenticate,isAdmin,stockController.deleteProduct)
 
 module.exports = stockRouter

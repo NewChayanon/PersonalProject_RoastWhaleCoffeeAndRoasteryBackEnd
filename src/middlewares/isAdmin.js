@@ -3,7 +3,7 @@ exports.isAdmin = (req, res, next) => {
   if (!user["is_admin"]) {
     return res
       .status(401)
-      .json({ msg: "You do not have permission to use this function" });
+      .json({ msg: "You don't have permission." });
   }
   next();
 };

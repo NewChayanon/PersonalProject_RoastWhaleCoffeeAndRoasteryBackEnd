@@ -19,6 +19,7 @@ authController.register = async (req, res, next) => {
     res.status(201).json({ msg: "Register Success" });
   } catch (error) {
     console.log(error);
+    next(error)
   }
 };
 
@@ -37,6 +38,7 @@ authController.login = async (req, res, next) => {
     res.json({accessToken})
   } catch (error) {
     console.log(error);
+    next(error)
   }
 };
 
