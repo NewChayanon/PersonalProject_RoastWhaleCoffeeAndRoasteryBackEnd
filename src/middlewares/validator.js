@@ -2,6 +2,7 @@ const {
   registerSchema,
   loginSchema,
 } = require("./joi-validator.js/auth-validator");
+const { addProduct } = require("./joi-validator.js/stock-validator");
 
 exports.registerValidator = (req, res, next) => {
   const { value, error } = registerSchema.validate(req.body);
@@ -20,6 +21,15 @@ exports.loginValidator = (req, res, next) => {
   req.input = value;
   next();
 };
+exports.addProductValidator = (req, res, next) => {
+  const {value,error} = addProduct.validate(req.body)
+  if (error) {
+    return res.status(400).json({ msg: error.details[0].message });
+  }
+  req.input = value
+  next()
+};
+
+
 exports.changeAddressValidator = (req, res, next) => {};
-exports.addProductValidator = (req, res, next) => {};
 exports.updateOrderValidator = (req, res, next) => {};
