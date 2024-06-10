@@ -32,8 +32,20 @@ productService.deleteProduct = (productId) =>
     where: { id: productId },
   });
 
-// fetch new product (wait edit - name != name, fetch image)
+// fetch new product (wait edit - groupBy)
 productService.fetchNewProduct = () =>
-  prisma.product.findMany({ orderBy: { created_at: "desc" }, take: 4 });
+  prisma.product.findMany({
+    orderBy: { created_at: "desc" },
+    take: 4,
+    include: { image: true },
+  });
+
+// fetch popular product (wait edit - groupBy)
+productService.fetchPopularProduct = () =>
+  prisma.product.findMany({
+    orderBy: { popular: "desc" },
+    take: 4,
+    include: { image: true },
+  });
 
 module.exports = productService;

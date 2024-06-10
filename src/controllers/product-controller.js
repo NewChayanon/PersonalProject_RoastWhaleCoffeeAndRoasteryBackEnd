@@ -12,4 +12,14 @@ productController.fetchNewProduct = async (req,res,next) =>{
     }
 }
 
+productController.fetchPopularProduct = async (req,res,next) =>{
+    try {
+        const fetch = await productService.fetchPopularProduct()
+        console.log(fetch)
+        res.status(200).json(fetch)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = productController
