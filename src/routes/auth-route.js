@@ -10,4 +10,5 @@ authRouter.post("/registers", registerValidator, authController.register);
 authRouter.post("/logins", loginValidator, authController.login);
 
 
+
 module.exports = authRouter;
