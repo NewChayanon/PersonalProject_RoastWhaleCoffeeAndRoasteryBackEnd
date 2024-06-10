@@ -11,4 +11,6 @@ stockRouter.post('/add-product-coffee',authenticate,addProductValidator,isAdmin,
 // delete product - Authentication (soft delete)
 stockRouter.delete('/remove-product/:productId',authenticate,isAdmin,stockController.deleteProduct)
 
+// update status order - Validation /Authentication
+stockRouter.patch('/order')
 module.exports = stockRouter

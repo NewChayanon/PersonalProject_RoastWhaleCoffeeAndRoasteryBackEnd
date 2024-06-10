@@ -21,6 +21,7 @@ model user {
   created_at DateTime  @default(now()) @db.Timestamp(0)
   updated_at DateTime  @updatedAt @db.Timestamp(0)
   address    address[]
+  cart       cart[]
 }
 
 model address {
@@ -46,30 +47,21 @@ model category {
 }
 
 model product {
-  id           Int            @id @default(autoincrement())
-  name         String         @db.VarChar(50)
-  description  String         @db.VarChar(100)
-  details      String         @db.Text
-  popular      Int
-  created_at   DateTime       @default(now()) @db.Timestamp(0)
-  updated_at   DateTime       @updatedAt @db.Timestamp(0)
-  is_delete    Boolean        @default(false)
-  category_id  Int
-  category     category       @relation(fields: [category_id], references: [id])
-  product_type product_type[]
-  image        image[]
-  cart_item    cart_item[]
-}
-
-model product_type {
-  id         Int         @id @default(autoincrement())
-  name       product_type_name
-  price      Int
-  stock      Int
-  created_at DateTime    @default(now()) @db.Timestamp(0)
-  updated_at DateTime    @updatedAt @db.Timestamp(0)
-  product_id Int
-  product    product     @relation(fields: [product_id], references: [id])
+  id          Int               @id @default(autoincrement())
+  name        String            @db.VarChar(50)
+  description String            @db.VarChar(100)
+  details     String            @db.Text
+  popular     Int
+  type        product_type_name
+  price       Int
+  stock       Int
+  created_at  DateTime          @default(now()) @db.Timestamp(0)
+  updated_at  DateTime          @updatedAt @db.Timestamp(0)
+  is_delete   Boolean           @default(false)
+  category_id Int
+  category    category          @relation(fields: [category_id], references: [id])
+  cart_item   cart_item[]
+  image       image[]
 }
 
 enum product_type_name {
@@ -81,7 +73,7 @@ enum product_type_name {
 
 model image {
   id         Int       @id @default(autoincrement())
-  image      String?   
+  image      String?
   created_at DateTime  @default(now()) @db.Timestamp(0)
   updated_at DateTime  @updatedAt @db.Timestamp(0)
   deleted_at DateTime? @db.Timestamp(0)
@@ -94,6 +86,8 @@ model cart {
   is_delete  Boolean     @default(false)
   created_at DateTime    @default(now()) @db.Timestamp(0)
   updated_at DateTime    @updatedAt @db.Timestamp(0)
+  user_id    Int
+  user       user        @relation(fields: [user_id], references: [id])
   cart_item  cart_item[]
 }
 

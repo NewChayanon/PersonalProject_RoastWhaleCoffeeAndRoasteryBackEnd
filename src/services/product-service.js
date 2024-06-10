@@ -14,16 +14,11 @@ productService.addProduct = (data) =>
           name: data.category.name,
         },
       },
+      type: data.type,
+      price: data.price,
+      stock: data.stock,
     },
   });
-
-productService.addProductType = (data, product_id) =>
-  data.map(
-    async (el) =>
-      await prisma.product_type.create({
-        data: { name: el.size, price: el.price, stock: el.stock, product_id },
-      })
-  );
 
 productService.addImage = (data, product_id) =>
   data.map(
