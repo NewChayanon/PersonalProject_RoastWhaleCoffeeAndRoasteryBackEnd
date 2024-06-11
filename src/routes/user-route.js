@@ -13,6 +13,6 @@ userRouter.post('/add-product/:productAndSizeId',authenticate,userController.add
 userRouter.delete('/remove/:cartItemId',authenticate,userController.deleteProductToCart)
 
 // change address - Validation /Authentication
-userRouter.patch('/address/:userId',authenticate,changeAddressValidator)
+userRouter.patch('/address',authenticate,changeAddressValidator,userController.changeAddress)
 
 module.exports = userRouter

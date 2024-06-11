@@ -2,6 +2,7 @@ const { boolean } = require("joi");
 const cartService = require("../services/cart-service");
 const { cart } = require("../models/prisma");
 const cartItemService = require("../services/cart-item-service");
+const addressService = require("../services/address-service");
 
 const userController = {};
 
@@ -66,6 +67,26 @@ userController.deleteProductToCart = async (req, res, next) => {
       cartItemId
     );
     return res.status(200).json({ meg: "delete successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// change address
+userController.changeAddress = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const address = req.address;
+    const haveAddress = await addressService.findAddressId(id);
+    if (haveAddress) {
+      const updateAddress = await addressService.updateAddress(
+        haveAddress.id,
+        address
+      );
+      return res.status(201).json({ msg: "update address successfully" });
+    }
+    const createAddress = await addressService.createAddress(id, address);
+    res.status(200).json({ msg: "fetch successfully" });
   } catch (error) {
     next(error);
   }
