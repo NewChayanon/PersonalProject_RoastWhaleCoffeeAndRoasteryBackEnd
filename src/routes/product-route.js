@@ -11,9 +11,6 @@ productRouter.get("/new",productController.fetchNewProduct)
 // fetch popular product
 productRouter.get("/popular",productController.fetchPopularProduct)
 
-
-
-
 // fetch info product
 productRouter.get('/coffee/:productId',productController.fetchInfoProduct)
 

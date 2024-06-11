@@ -1,3 +1,4 @@
+const { size_type } = require("@prisma/client");
 const prisma = require("../models/prisma");
 
 const productService = {};
@@ -5,9 +6,7 @@ const productService = {};
 //  fetch all coffee
 productService.getCoffee = () => prisma.product.findMany({});
 
-
-productService.searchCoffeeId = (coffeeName) =>prisma.product.findFirst({})
-
+productService.searchCoffeeId = (coffeeName) => prisma.product.findFirst({});
 
 productService.addProduct = (data) =>
   prisma.product.create({
@@ -17,7 +16,7 @@ productService.addProduct = (data) =>
       details: data.details,
       popular: data.popular,
       category_id: data.categoryId,
-      
+
       // price: data.price,
       // stock: data.stock,
     },
@@ -35,7 +34,7 @@ productService.deleteProduct = (productId) =>
     where: { id: productId },
   });
 
-// fetch new product (wait edit - groupBy)
+// fetch new product 
 productService.fetchNewProduct = () =>
   prisma.product.findMany({
     orderBy: { created_at: "desc" },
@@ -43,7 +42,7 @@ productService.fetchNewProduct = () =>
     include: { image: true },
   });
 
-// fetch popular product (wait edit - groupBy)
+// fetch popular product 
 productService.fetchPopularProduct = () =>
   prisma.product.findMany({
     orderBy: { popular: "desc" },
@@ -51,7 +50,8 @@ productService.fetchPopularProduct = () =>
     include: { image: true },
   });
 
-// fetch info product (wait edit)
-productService.fetchInfoProduct = () => prisma.product.findFirst({});
+// fetch info product
+productService.fetchInfoProduct = (productId) =>
+  prisma.product.findFirst({ where: { id: productId },include:{product_and_size:true} });
 
 module.exports = productService;
