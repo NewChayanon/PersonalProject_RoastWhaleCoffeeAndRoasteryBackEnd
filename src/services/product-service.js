@@ -2,17 +2,12 @@ const prisma = require("../models/prisma");
 
 const productService = {};
 
+//  fetch all coffee
+productService.getCoffee = () => prisma.product.findMany({});
+
+
 productService.searchCoffeeId = (coffeeName) =>prisma.product.findFirst({})
 
-productService.getCoffee = () =>
-  prisma.product.groupBy({
-    by: ["name"],
-    
-    // where: {
-    //   category_id: 1,
-    // },
-    
-  });
 
 productService.addProduct = (data) =>
   prisma.product.create({

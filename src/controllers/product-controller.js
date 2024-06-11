@@ -5,7 +5,7 @@ const productController = {}
 productController.getCoffee = async (req,res,next) => {
     try {
         const coffee = await productService.getCoffee()
-        // console.log(coffee)
+        console.log(coffee)
         // const searchCoffeeId = await productService.searchCoffeeId(coffee.name)
         res.json({coffee})
     } catch (error) {
