@@ -9,7 +9,7 @@ userController.getUser = (req, res) => {
   res.json({ user: req.user });
 };
 
-// add product in cart
+// add and update - product in cart
 userController.addProductToCart = async (req, res, next) => {
   try {
     const user = req.user;
