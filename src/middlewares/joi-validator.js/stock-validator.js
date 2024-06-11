@@ -5,10 +5,8 @@ exports.addProduct = Joi.object({
   description: Joi.string().required(),
   details: Joi.string().required(),
   popular: Joi.number().required(),
-  category: Joi.object({
-    name: Joi.string().required(),
-  }),
-  type: Joi.string(),
+  category: Joi.string(),
+  size: Joi.string(),
   price: Joi.number(),
   stock: Joi.number(),
   image: Joi.array().items(

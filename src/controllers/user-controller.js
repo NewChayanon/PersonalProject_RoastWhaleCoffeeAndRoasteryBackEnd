@@ -13,15 +13,36 @@ userController.getUser = (req, res) => {
 userController.addProductToCart = async (req, res, next) => {
   try {
     const user = req.user;
-    const productId = +req.params.productTypeId;
-    const body = req.body
+    const productAndSizeId = +req.params.productAndSizeId;
+    const { quantity } = req.body;
     const haveCart = await cartService.haveCart(user.id);
-   
+
     if (!haveCart) {
       const createCart = await cartService.createCart(user.id);
-      const addProductToCart = await cartItemService.addProductToCartItem(createCart.id,productId,body.quantity)
-    } else {
-      const addProductToCart = await cartItemService.addProductToCartItem(haveCart.id,productId,body.quantity)
+      const addProductToCart = await cartItemService.addProductToCartItem(
+        createCart.id,
+        productAndSizeId,
+        quantity
+      );
+    }
+    if (haveCart) {
+      const haveProductAndSize = await cartItemService.checkProductAndSize(
+        haveCart.id,
+        productAndSizeId
+      );
+      if (!haveProductAndSize) {
+        const addProductToCart = await cartItemService.addProductToCartItem(
+          haveCart.id,
+          productAndSizeId,
+          quantity
+        );
+      } else {
+        const updateProductInCartItem =
+          await cartItemService.updateProductInCartItem(
+            quantity,
+            haveProductAndSize.id
+          );
+      }
     }
 
     // console.log(haveCart);
@@ -34,12 +55,19 @@ userController.addProductToCart = async (req, res, next) => {
 // delete product in cart
 userController.deleteProductToCart = async (req, res, next) => {
   try {
-    const cartItemId = +req.params.cartItemId
-    const deleteCartItem = await cartItemService.deleteProductInCartItem(cartItemId)
-    console.log(deleteCartItem)
-    res.status(200).json({meg:"delete successfully"})
+    const cartItemId = +req.params.cartItemId;
+    const user = req.user;
+    const cartItem = await cartItemService.findCartItemAndCart(cartItemId);
+
+    if (user.id != cartItem.carts.user_id) {
+      return res.status(400).json({ msg: "You don't have cart" });
+    }
+    const deleteCartItem = await cartItemService.deleteProductInCartItem(
+      cartItemId
+    );
+    return res.status(200).json({ meg: "delete successfully" });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 

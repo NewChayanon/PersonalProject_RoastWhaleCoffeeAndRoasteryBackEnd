@@ -2,6 +2,18 @@ const prisma = require("../models/prisma");
 
 const productService = {};
 
+productService.searchCoffeeId = (coffeeName) =>prisma.product.findFirst({})
+
+productService.getCoffee = () =>
+  prisma.product.groupBy({
+    by: ["name"],
+    
+    // where: {
+    //   category_id: 1,
+    // },
+    
+  });
+
 productService.addProduct = (data) =>
   prisma.product.create({
     data: {
@@ -9,14 +21,10 @@ productService.addProduct = (data) =>
       description: data.description,
       details: data.details,
       popular: data.popular,
-      category: {
-        create: {
-          name: data.category.name,
-        },
-      },
-      type: data.type,
-      price: data.price,
-      stock: data.stock,
+      category_id: data.categoryId,
+      
+      // price: data.price,
+      // stock: data.stock,
     },
   });
 
@@ -47,5 +55,8 @@ productService.fetchPopularProduct = () =>
     take: 4,
     include: { image: true },
   });
+
+// fetch info product (wait edit)
+productService.fetchInfoProduct = () => prisma.product.findFirst({});
 
 module.exports = productService;

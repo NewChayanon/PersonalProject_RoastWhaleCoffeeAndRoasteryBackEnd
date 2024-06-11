@@ -1,12 +1,19 @@
+const categoryService = require("../services/category-service");
+const productAndSizeService = require("../services/product-and-size-service");
 const productService = require("../services/product-service");
+const sizeService = require("../services/size-service");
 
 const stockController = {};
 
 stockController.addProduct = async (req, res, next) => {
   try {
     const data = req.input;
-    console.log(data);
+    const categoryId = await categoryService.searchCategory(data.category)
+    delete data.category
+    data.categoryId = categoryId.id
     const product = await productService.addProduct(data);
+    const size = await sizeService.addProduct(data.size)
+    const productAndSize = await productAndSizeService.addProduct(size.id, product.id, data)
     const image = await productService.addImage(data.image, product.id);
     res.status(201).json({ msg: "create product success" });
   } catch (error) {

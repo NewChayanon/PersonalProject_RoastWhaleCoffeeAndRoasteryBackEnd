@@ -17,7 +17,7 @@ app.use(authRouter);
 app.use(userRouter);
 app.use("/admin", stockRouter);
 app.use("/users", userRouter);
-app.use('/product',productRouter)
+app.use("/product", productRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

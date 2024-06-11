@@ -47,28 +47,46 @@ model category {
 }
 
 model product {
-  id          Int               @id @default(autoincrement())
-  name        String            @db.VarChar(50)
-  description String            @db.VarChar(100)
-  details     String            @db.Text
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(50)
+  description String   @db.VarChar(100)
+  details     String   @db.Text
   popular     Int
-  type        product_type_name
-  price       Int
-  stock       Int
-  created_at  DateTime          @default(now()) @db.Timestamp(0)
-  updated_at  DateTime          @updatedAt @db.Timestamp(0)
-  is_delete   Boolean           @default(false)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @updatedAt @db.Timestamp(0)
+  is_delete   Boolean  @default(false)
   category_id Int
-  category    category          @relation(fields: [category_id], references: [id])
-  cart_item   cart_item[]
-  image       image[]
+
+  category         category           @relation(fields: [category_id], references: [id])
+  image            image[]
+  product_and_size product_and_size[]
 }
 
-enum product_type_name {
+model size {
+  id               Int                @id @default(autoincrement())
+  size             size_type
+  created_at       DateTime           @default(now()) @db.Timestamp(0)
+  updated_at       DateTime           @updatedAt @db.Timestamp(0)
+  product_and_size product_and_size[]
+}
+
+enum size_type {
   ONE_HUNDRED
   TWO_HUNDRED_FIFTY
   FIVE_HUNDRED
-  TOOL
+}
+
+model product_and_size {
+  id         Int         @id @default(autoincrement())
+  price      Int
+  stock      Int
+  size_id    Int
+  product_id Int
+  created_at DateTime    @default(now()) @db.Timestamp(0)
+  updated_at DateTime    @updatedAt @db.Timestamp(0)
+  size       size        @relation(fields: [size_id], references: [id])
+  product    product     @relation(fields: [product_id], references: [id])
+  cart_item  cart_item[]
 }
 
 model image {
@@ -88,16 +106,16 @@ model cart {
   updated_at DateTime    @updatedAt @db.Timestamp(0)
   user_id    Int
   user       user        @relation(fields: [user_id], references: [id])
-  cart_item  cart_item[]
+  cart_items cart_item[]
 }
 
 model cart_item {
-  id         Int     @id @default(autoincrement())
-  quantity   Int?
-  cart_id    Int
-  product_id Int
-  cart       cart    @relation(fields: [cart_id], references: [id])
-  product    product @relation(fields: [product_id], references: [id])
+  id                  Int              @id @default(autoincrement())
+  quantity            Int?
+  cart_id             Int
+  carts               cart             @relation(fields: [cart_id], references: [id])
+  product_and_size_id Int
+  product_and_size    product_and_size @relation(fields: [product_and_size_id], references: [id])
 }
 
 model order {
