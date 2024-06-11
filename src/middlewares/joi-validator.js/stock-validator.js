@@ -15,3 +15,7 @@ exports.addProduct = Joi.object({
     })
   ),
 });
+
+exports.updateStatusOrder = Joi.object({
+  status:Joi.string().required().trim()
+})

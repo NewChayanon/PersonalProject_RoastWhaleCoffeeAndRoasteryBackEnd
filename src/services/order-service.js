@@ -18,7 +18,9 @@ orderService.shoppingList = (cartIdArray) =>
   prisma.order.findMany({
     where: { cart_id: { in: cartIdArray } },
     include: { address: true, cart: true },
-    
   });
+
+orderService.updateStatusOrder = (orderId, status) =>
+  prisma.order.update({ where: { id: orderId }, data: { status: status } });
 
 module.exports = orderService;

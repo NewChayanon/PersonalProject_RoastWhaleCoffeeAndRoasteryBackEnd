@@ -1,7 +1,7 @@
 const express= require('express')
 const stockController = require('../controllers/stock-controller')
 const { authenticate } = require('../middlewares/authenticate')
-const { addProductValidator } = require('../middlewares/validator')
+const { addProductValidator, updateOrderValidator } = require('../middlewares/validator')
 const { isAdmin } = require('../middlewares/isAdmin')
 const stockRouter = express.Router()
 
@@ -12,7 +12,7 @@ stockRouter.post('/add-product-coffee',authenticate,addProductValidator,isAdmin,
 stockRouter.delete('/remove-product/:productId',authenticate,isAdmin,stockController.deleteProduct)
 
 // update status order - Validation /Authentication
-stockRouter.patch('/order')
+stockRouter.patch('/order/:orderId',authenticate,updateOrderValidator,isAdmin,stockController.updateStatusOrder)
 
 
 module.exports = stockRouter
