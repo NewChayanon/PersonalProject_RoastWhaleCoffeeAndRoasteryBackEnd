@@ -4,6 +4,7 @@ const { cart } = require("../models/prisma");
 const cartItemService = require("../services/cart-item-service");
 const addressService = require("../services/address-service");
 const orderService = require("../services/order-service");
+const userService = require("../services/user-service");
 
 const userController = {};
 
@@ -105,29 +106,32 @@ userController.CreateOrder = async (req, res, next) => {
 
     // cart_id
     // (AND:[{user_id:user.id},{is_delete:false}])
-    const cartId = await cartService.haveCart(user.id) // cartId.id
+    const cartId = await cartService.haveCart(user.id); // cartId.id
 
     // change status cart
-    const isDelete = await cartService.isDelete(cartId.id)
+    const isDelete = await cartService.isDelete(cartId.id);
 
     // create order
-    const order = await orderService.createOrder(addressId.id,cartId.id,body)
-    res.status(200).json({order});
+    const order = await orderService.createOrder(addressId.id, cartId.id, body);
+    res.status(200).json({ order });
   } catch (error) {
     next(error);
   }
 };
 
 // check status order user
-userController.fetchShoppingList = async (req,res,next)=>{
-  try { 
-    const {id} =req.user
-    const cartId = await cartService.checkStatus(id)
-    const fetchShoppingList = await orderService.shoppingList(cartId)
-    res.status(200).json({fetchShoppingList})
+userController.fetchShoppingList = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const cartId = await cartService.checkStatus(id);
+
+    const cartIdArray = cartId.map((el) => el.id);
+    const fetchShoppingList = await orderService.shoppingList(cartIdArray);
+
+    res.status(200).json(fetchShoppingList);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 module.exports = userController;

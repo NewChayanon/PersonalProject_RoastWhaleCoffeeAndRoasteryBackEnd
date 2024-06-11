@@ -28,7 +28,7 @@ model address {
   id         Int      @id @default(autoincrement())
   first_name String?  @db.VarChar(20)
   last_name  String?  @db.VarChar(20)
-  mobile     String?  @unique @db.VarChar(10)
+  mobile     String?  @db.VarChar(10)
   country    String?  @db.VarChar(20)
   address    String?  @db.VarChar(100)
   district   String?  @db.VarChar(20)

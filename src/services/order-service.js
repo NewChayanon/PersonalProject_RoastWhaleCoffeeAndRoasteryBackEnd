@@ -14,9 +14,11 @@ orderService.createOrder = (addressId, cartId, data) =>
     },
   });
 
-orderService.shoppingList = async (cartId) => prisma.order.findMany({where:{cart_id:2}})
-//   await cartId.map((el) =>
-//     prisma.order.findUnique({ where: { cart_id: el.id } })
-//   );
+orderService.shoppingList = (cartIdArray) =>
+  prisma.order.findMany({
+    where: { cart_id: { in: cartIdArray } },
+    include: { address: true, cart: true },
+    
+  });
 
 module.exports = orderService;
