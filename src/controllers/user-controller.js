@@ -3,6 +3,7 @@ const cartService = require("../services/cart-service");
 const { cart } = require("../models/prisma");
 const cartItemService = require("../services/cart-item-service");
 const addressService = require("../services/address-service");
+const orderService = require("../services/order-service");
 
 const userController = {};
 
@@ -78,18 +79,55 @@ userController.changeAddress = async (req, res, next) => {
     const { id } = req.user;
     const address = req.address;
     const haveAddress = await addressService.findAddressId(id);
-    if (haveAddress) {
-      const updateAddress = await addressService.updateAddress(
-        haveAddress.id,
-        address
-      );
-      return res.status(201).json({ msg: "update address successfully" });
-    }
+    // if (haveAddress) {
+    //   const updateAddress = await addressService.updateAddress(
+    //     haveAddress.id,
+    //     address
+    //   );
+    //   return res.status(201).json({ msg: "update address successfully" });
+    // }
     const createAddress = await addressService.createAddress(id, address);
     res.status(200).json({ msg: "fetch successfully" });
   } catch (error) {
     next(error);
   }
 };
+
+// create order - Authentication
+userController.CreateOrder = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const body = req.body;
+
+    // address_id
+    // (user.id = user_id(table address))
+    const addressId = await addressService.findAddressId(user.id); // addressId.id
+
+    // cart_id
+    // (AND:[{user_id:user.id},{is_delete:false}])
+    const cartId = await cartService.haveCart(user.id) // cartId.id
+
+    // change status cart
+    const isDelete = await cartService.isDelete(cartId.id)
+
+    // create order
+    const order = await orderService.createOrder(addressId.id,cartId.id,body)
+    res.status(200).json({order});
+  } catch (error) {
+    next(error);
+  }
+};
+
+// check status order user
+userController.fetchShoppingList = async (req,res,next)=>{
+  try { 
+    const {id} =req.user
+    const cartId = await cartService.checkStatus(id)
+    const fetchShoppingList = await orderService.shoppingList(cartId)
+    res.status(200).json({fetchShoppingList})
+  } catch (error) {
+    next(error)
+  }
+}
 
 module.exports = userController;

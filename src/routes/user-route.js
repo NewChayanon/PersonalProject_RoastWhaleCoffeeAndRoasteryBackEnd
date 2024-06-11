@@ -15,4 +15,10 @@ userRouter.delete('/remove/:cartItemId',authenticate,userController.deleteProduc
 // change address - Validation /Authentication
 userRouter.patch('/address',authenticate,changeAddressValidator,userController.changeAddress)
 
+// create order - Authentication
+userRouter.post('/check-out',authenticate,userController.CreateOrder)
+
+// check status order - Authentication
+userRouter.get('/shopping-list',authenticate,userController.fetchShoppingList)
+
 module.exports = userRouter

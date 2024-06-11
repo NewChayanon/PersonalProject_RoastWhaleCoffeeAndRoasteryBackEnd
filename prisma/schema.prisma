@@ -38,6 +38,7 @@ model address {
   updated_at DateTime @updatedAt @db.Timestamp(0)
   user_id    Int
   user       user     @relation(fields: [user_id], references: [id])
+  order      order[]
 }
 
 model category {
@@ -107,6 +108,7 @@ model cart {
   user_id    Int
   user       user        @relation(fields: [user_id], references: [id])
   cart_items cart_item[]
+  order      order[]
 }
 
 model cart_item {
@@ -121,10 +123,14 @@ model cart_item {
 model order {
   id         Int          @id @default(autoincrement())
   image      String
-  date       DateTime     @db.Timestamp(0)
-  hour       Int
-  minute     Int
+  date       String
+  hour       String
+  minute     String
   status     order_status @default(PENDING)
+  address_id Int
+  address    address      @relation(fields: [address_id], references: [id])
+  cart_id    Int
+  cart       cart         @relation(fields: [cart_id], references: [id])
   crated_at  DateTime     @default(now()) @db.Timestamp(0)
   updated_at DateTime     @updatedAt @db.Timestamp(0)
 }

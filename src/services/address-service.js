@@ -32,7 +32,11 @@ addressService.updateAddress = (addressId, data) =>
     },
   });
 
-addressService.findAddressId = (userId) =>
-  prisma.address.findFirst({ where: { user_id: userId } });
+addressService.findAddressId = (userId) => prisma.address.findFirst({
+    orderBy: { created_at: "desc" },
+    where:{user_id:userId},
+    take: 1,
+})
+//   prisma.address.findFirst({ where: { user_id: userId } });
 
 module.exports = addressService;
