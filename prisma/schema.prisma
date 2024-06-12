@@ -43,7 +43,7 @@ model address {
 
 model category {
   id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(50)
+  name    String    @db.VarChar(50) @unique
   product product[]
 }
 
@@ -65,9 +65,7 @@ model product {
 
 model size {
   id               Int                @id @default(autoincrement())
-  size             size_type
-  created_at       DateTime           @default(now()) @db.Timestamp(0)
-  updated_at       DateTime           @updatedAt @db.Timestamp(0)
+  size             size_type @unique
   product_and_size product_and_size[]
 }
 
@@ -75,6 +73,7 @@ enum size_type {
   ONE_HUNDRED
   TWO_HUNDRED_FIFTY
   FIVE_HUNDRED
+  TOOL
 }
 
 model product_and_size {
