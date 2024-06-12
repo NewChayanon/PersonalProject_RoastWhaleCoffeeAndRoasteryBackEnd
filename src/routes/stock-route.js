@@ -14,5 +14,6 @@ stockRouter.delete('/remove-product/:productId',authenticate,isAdmin,stockContro
 // update status order - Validation /Authentication
 stockRouter.patch('/order/:orderId',authenticate,updateOrderValidator,isAdmin,stockController.updateStatusOrder)
 
+stockRouter.post('generate-server',authenticate,isAdmin)
 
 module.exports = stockRouter

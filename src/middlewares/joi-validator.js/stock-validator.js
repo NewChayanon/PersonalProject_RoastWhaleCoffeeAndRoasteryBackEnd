@@ -6,9 +6,14 @@ exports.addProduct = Joi.object({
   details: Joi.string().required(),
   popular: Joi.number().required(),
   category: Joi.string(),
-  size: Joi.string(),
-  price: Joi.number(),
-  stock: Joi.number(),
+  coffee: Joi.array().items(
+    Joi.object({
+      size: Joi.string().required(),
+      price: Joi.number().required(),
+      stock: Joi.number().required(),
+    })
+  ),
+  tool:Joi.object().required(),
   image: Joi.array().items(
     Joi.object({
       image: Joi.string(),
@@ -17,5 +22,5 @@ exports.addProduct = Joi.object({
 });
 
 exports.updateStatusOrder = Joi.object({
-  status:Joi.string().required().trim()
-})
+  status: Joi.string().required().trim(),
+});

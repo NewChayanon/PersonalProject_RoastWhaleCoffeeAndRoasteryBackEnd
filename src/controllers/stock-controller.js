@@ -6,19 +6,51 @@ const sizeService = require("../services/size-service");
 
 const stockController = {};
 
+const editSize = (coffee, sizeId) => {
+  const size = coffee.map((el) => el.size);
+  const newSizeId = [];
+  for (let element of size) {
+    const positionSizeId = sizeId.find((el) => el.size == element);
+    newSizeId.push(positionSizeId.id);
+  }
+  for (let i in coffee) {
+    delete coffee[i].size;
+    coffee[i]["size_id"] = newSizeId[i];
+  }
+  return coffee;
+};
+
 stockController.addProduct = async (req, res, next) => {
   try {
     const data = req.input;
-    const categoryId = await categoryService.searchCategory(data.category);
-    delete data.category;
+    const { category, coffee, tool } = req.input;
+
+    const categoryId = await categoryService.searchCategory(category);
     data.categoryId = categoryId.id;
     const product = await productService.addProduct(data);
-    const size = await sizeService.addProduct(data.size);
-    const productAndSize = await productAndSizeService.addProduct(
-      size.id,
-      product.id,
-      data
-    );
+
+    if (category === "coffee") {
+      const sizeIdCoffee = await sizeService.searchSizeCoffee(coffee);
+      const prepareInfoCoffee = await productAndSizeService.prepareInfoCoffee(
+        coffee,
+        sizeIdCoffee,
+        product.id
+      );
+      const productAndSize = await productAndSizeService.addProduct(
+        prepareInfoCoffee
+      );
+    }
+    if (category === "tool") {
+      const sizeIdTool = await sizeService.searchSizeTool(tool);
+      const prepareInfoTool = await productAndSizeService.prepareInfoTool(
+        tool,
+        sizeIdTool.id,
+        product.id
+      );
+      const productAndSize = await productAndSizeService.addProduct(
+        prepareInfoTool
+      );
+    }
     const image = await productService.addImage(data.image, product.id);
     res.status(201).json({ msg: "create product success" });
   } catch (error) {
@@ -41,11 +73,11 @@ stockController.deleteProduct = async (req, res, next) => {
 stockController.updateStatusOrder = async (req, res, next) => {
   try {
     const orderId = +req.params.orderId;
-    const {status} = req.order
-    const updated = await orderService.updateStatusOrder(orderId,status)
-    res.status(200).json({updated})
+    const { status } = req.order;
+    const updated = await orderService.updateStatusOrder(orderId, status);
+    res.status(200).json({ updated });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 

@@ -16,10 +16,8 @@ productService.addProduct = (data) =>
       details: data.details,
       popular: data.popular,
       category_id: data.categoryId,
-
-      // price: data.price,
-      // stock: data.stock,
     },
+    
   });
 
 productService.addImage = (data, product_id) =>

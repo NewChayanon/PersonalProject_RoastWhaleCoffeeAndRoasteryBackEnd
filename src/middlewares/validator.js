@@ -31,6 +31,11 @@ exports.addProductValidator = (req, res, next) => {
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
+  const { category } = value;
+  if (category !== "coffee" && category !== "tool") {
+    return res.status(400).json({ msg: "category invalid" });
+  }
+
   req.input = value;
   next();
 };
@@ -52,7 +57,7 @@ exports.updateOrderValidator = (req, res, next) => {
     return res.status(400).json({ msg: error.details[0].message });
   }
   const { status } = value;
-  
+
   if (status != "PENDING" && status != "SUCCESSED" && status != "FAILED") {
     return res.status(400).json({ msg: "status invalid" });
   }
