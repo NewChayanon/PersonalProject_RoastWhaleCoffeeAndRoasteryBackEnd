@@ -6,20 +6,6 @@ const sizeService = require("../services/size-service");
 
 const stockController = {};
 
-const editSize = (coffee, sizeId) => {
-  const size = coffee.map((el) => el.size);
-  const newSizeId = [];
-  for (let element of size) {
-    const positionSizeId = sizeId.find((el) => el.size == element);
-    newSizeId.push(positionSizeId.id);
-  }
-  for (let i in coffee) {
-    delete coffee[i].size;
-    coffee[i]["size_id"] = newSizeId[i];
-  }
-  return coffee;
-};
-
 stockController.addProduct = async (req, res, next) => {
   try {
     const data = req.input;
@@ -76,6 +62,17 @@ stockController.updateStatusOrder = async (req, res, next) => {
     const { status } = req.order;
     const updated = await orderService.updateStatusOrder(orderId, status);
     res.status(200).json({ updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
+stockController.generateServer = async (req, res, next) => {
+  try {
+    const { category, size } = req.body;
+    await categoryService.generateServer(category)
+    await sizeService.generateServer(size)
+    res.status(200).json({ msg: "generate successfully" });
   } catch (error) {
     next(error);
   }
