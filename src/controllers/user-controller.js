@@ -185,4 +185,15 @@ userController.fetchShoppingList = async (req, res, next) => {
   }
 };
 
+userController.cartUser = async (req,res,next) => {
+  try {
+    const { id } = req.user;
+    const cartUser = await cartService.haveCart(id)
+    const cartItemUser = await cartItemService.findCartItemByCartId(cartUser.id)
+    res.status(200).json(cartItemUser)
+  } catch (error) {
+    
+  }
+}
+
 module.exports = userController;

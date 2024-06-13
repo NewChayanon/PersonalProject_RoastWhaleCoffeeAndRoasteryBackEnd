@@ -24,4 +24,7 @@ userRouter.post('/check-out',authenticate,userController.CreateOrder)
 // check status order - Authentication
 userRouter.get('/shopping-list',authenticate,userController.fetchShoppingList)
 
+// fetch cart user
+userRouter.get("/cart",authenticate,userController.cartUser)
+
 module.exports = userRouter

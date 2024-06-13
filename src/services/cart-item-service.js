@@ -1,4 +1,5 @@
 const prisma = require("../models/prisma");
+const { connect } = require("../routes/stock-route");
 const cartService = require("./cart-service");
 const cartItemService = {};
 
@@ -33,6 +34,18 @@ cartItemService.findCartItemAndCart = (cartItemId) =>
   prisma.cart_item.findUnique({
     where: { id: cartItemId },
     include: { carts: true },
+  });
+
+cartItemService.findCartItemByCartId = (cartId) =>
+  prisma.cart_item.findMany({
+    where: { cart_id: cartId },
+    include: {
+      product_and_size: {
+        include: {
+          product: true,
+        },
+      },
+    },
   });
 
 module.exports = cartItemService;
