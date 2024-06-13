@@ -81,7 +81,9 @@ userController.quickAddProductToCart = async (req, res, next) => {
         haveCart.id,
         minSize
       );
-      let updateQuantity = haveProductAndSize ? haveProductAndSize.quantity + 1 : quantity;
+      let updateQuantity = haveProductAndSize
+        ? haveProductAndSize.quantity + 1
+        : quantity;
 
       if (!haveProductAndSize) {
         const addProductToCart = await cartItemService.addProductToCartItem(
@@ -100,7 +102,6 @@ userController.quickAddProductToCart = async (req, res, next) => {
 
     // console.log(haveCart);
     res.status(201).json({ msg: "add product successfully" });
-    
   } catch (error) {
     next(error);
   }
@@ -185,15 +186,23 @@ userController.fetchShoppingList = async (req, res, next) => {
   }
 };
 
-userController.cartUser = async (req,res,next) => {
+userController.cartUser = async (req, res, next) => {
   try {
     const { id } = req.user;
-    const cartUser = await cartService.haveCart(id)
-    const cartItemUser = await cartItemService.findCartItemByCartId(cartUser.id)
-    res.status(200).json(cartItemUser)
-  } catch (error) {
+    const cartUser = await cartService.haveCart(id);
+    if (!cartUser) {
+      const createNewCart = await cartService.createCart(id);
+      const cartItemUser = await cartItemService.findCartItemByCartId(
+        createNewCart.id
+      );
+      return res.status(200).json(cartItemUser);
+    }
+    const cartItemUser = await cartItemService.findCartItemByCartId(
+      cartUser.id
+    );
     
-  }
-}
+    res.status(200).json(cartItemUser);
+  } catch (error) {}
+};
 
 module.exports = userController;

@@ -5,6 +5,9 @@ const productRouter = express.Router()
 //  fetch all coffee
 productRouter.get('/coffee',productController.getCoffee)
 
+// fetch all tool
+productRouter.get('/tool',productController.getTool)
+
 //  fetch new product
 productRouter.get("/new",productController.fetchNewProduct)
 

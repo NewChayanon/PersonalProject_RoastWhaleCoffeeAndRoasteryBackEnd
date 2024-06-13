@@ -13,6 +13,15 @@ productController.getCoffee = async (req,res,next) => {
     }
 }
 
+productController.getTool = async (req,res,next)=>{
+    try {
+        const tool = await productService.getTool()
+        res.json({tool})
+    } catch (error) {
+        next(error)
+    }
+}
+
 productController.fetchNewProduct = async (req,res,next) =>{
     try {
         const fetch = await productService.fetchNewProduct()

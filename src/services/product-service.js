@@ -6,6 +6,8 @@ const productService = {};
 //  fetch all coffee
 productService.getCoffee = () => prisma.product.findMany({where:{category_id:1}});
 
+productService.getTool = () => prisma.product.findMany({where:{category_id:2}})
+
 productService.searchCoffeeId = (coffeeName) => prisma.product.findFirst({});
 
 productService.addProduct = (data) =>

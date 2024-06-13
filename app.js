@@ -7,9 +7,11 @@ const stockRouter = require("./src/routes/stock-route");
 const { notFoundMiddleware } = require("./src/middlewares/not-found");
 const errorMiddleware = require("./src/middlewares/error");
 const productRouter = require("./src/routes/product-route");
+const morgan = require("morgan");
 const app = express();
 
 app.use(cors());
+app.use(morgan('dev'));
 
 app.use(express.json());
 
