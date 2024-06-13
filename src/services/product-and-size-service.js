@@ -26,7 +26,13 @@ productAndSizeService.prepareInfoTool = (tool, sizeId, productId) => {
   delete tool.size;
   tool["size_id"] = sizeId;
   tool["product_id"] = productId;
-  return tool
+  return tool;
 };
+
+productAndSizeService.findProductId = (productAndSizeId) =>
+  prisma.product_and_size.findMany({
+    where: { AND: [{ product_id: productAndSizeId }, { price: { not: 0 } }] },
+    orderBy: { price: "asc" },
+  });
 
 module.exports = productAndSizeService;

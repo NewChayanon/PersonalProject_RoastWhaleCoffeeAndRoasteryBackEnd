@@ -5,6 +5,7 @@ const cartItemService = require("../services/cart-item-service");
 const addressService = require("../services/address-service");
 const orderService = require("../services/order-service");
 const userService = require("../services/user-service");
+const productAndSizeService = require("../services/product-and-size-service");
 
 const userController = {};
 
@@ -50,6 +51,56 @@ userController.addProductToCart = async (req, res, next) => {
 
     // console.log(haveCart);
     res.status(201).json({ msg: "add product successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+userController.quickAddProductToCart = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const productAndSizeId = +req.params.productAndSizeId;
+    const { quantity } = req.body;
+    const haveCart = await cartService.haveCart(user.id);
+
+    const productId = await productAndSizeService.findProductId(
+      productAndSizeId
+    );
+    const minSize = productId[0].id;
+
+    if (!haveCart) {
+      const createCart = await cartService.createCart(user.id);
+      const addProductToCart = await cartItemService.addProductToCartItem(
+        createCart.id,
+        minSize,
+        quantity
+      );
+    }
+    if (haveCart) {
+      const haveProductAndSize = await cartItemService.checkProductAndSize(
+        haveCart.id,
+        minSize
+      );
+      let updateQuantity = haveProductAndSize ? haveProductAndSize.quantity + 1 : quantity;
+
+      if (!haveProductAndSize) {
+        const addProductToCart = await cartItemService.addProductToCartItem(
+          haveCart.id,
+          minSize,
+          updateQuantity
+        );
+      } else {
+        const updateProductInCartItem =
+          await cartItemService.updateProductInCartItem(
+            updateQuantity,
+            haveProductAndSize.id
+          );
+      }
+    }
+
+    // console.log(haveCart);
+    res.status(201).json({ msg: "add product successfully" });
+    
   } catch (error) {
     next(error);
   }
