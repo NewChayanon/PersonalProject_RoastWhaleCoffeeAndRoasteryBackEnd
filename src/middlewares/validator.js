@@ -6,6 +6,7 @@ const {
   addProduct,
   updateStatusOrder,
   payment,
+  editProduct,
 } = require("./joi-validator.js/stock-validator");
 const { changeAddress } = require("./joi-validator.js/user-validator");
 
@@ -27,6 +28,7 @@ exports.loginValidator = (req, res, next) => {
   req.input = value;
   next();
 };
+
 exports.addProductValidator = (req, res, next) => {
   const { value, error } = addProduct.validate(req.body);
   if (error) {
@@ -74,3 +76,18 @@ exports.paymentValidator = (req,res,next) => {
   req.address = value;
   next();
 }
+
+// edit product
+exports.editValidator = (req, res, next) => {
+  const { value, error } = editProduct.validate(req.body);
+  if (error) {
+    return res.status(400).json({ msg: error.details[0].message });
+  }
+  const { category } = value;
+  if (category !== "coffee" && category !== "tool") {
+    return res.status(400).json({ msg: "category invalid" });
+  }
+
+  req.input = value;
+  next();
+};

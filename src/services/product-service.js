@@ -4,9 +4,14 @@ const prisma = require("../models/prisma");
 const productService = {};
 
 //  fetch all coffee
-productService.getCoffee = () => prisma.product.findMany({where:{category_id:1}});
+productService.getCoffee = () =>
+  prisma.product.findMany({
+    where: { category_id: 1 },
+    include: { product_and_size: { include: { size: true } } },
+  });
 
-productService.getTool = () => prisma.product.findMany({where:{category_id:2}})
+productService.getTool = () =>
+  prisma.product.findMany({ where: { category_id: 2 } });
 
 productService.searchCoffeeId = (coffeeName) => prisma.product.findFirst({});
 
@@ -19,7 +24,6 @@ productService.addProduct = (data) =>
       popular: data.popular,
       category_id: data.categoryId,
     },
-    
   });
 
 productService.addImage = (data, product_id) =>
@@ -34,7 +38,7 @@ productService.deleteProduct = (productId) =>
     where: { id: productId },
   });
 
-// fetch new product 
+// fetch new product
 productService.fetchNewProduct = () =>
   prisma.product.findMany({
     orderBy: { created_at: "desc" },
@@ -42,7 +46,7 @@ productService.fetchNewProduct = () =>
     include: { image: true },
   });
 
-// fetch popular product 
+// fetch popular product
 productService.fetchPopularProduct = () =>
   prisma.product.findMany({
     orderBy: { popular: "desc" },
@@ -52,6 +56,15 @@ productService.fetchPopularProduct = () =>
 
 // fetch info product
 productService.fetchInfoProduct = (productId) =>
-  prisma.product.findFirst({ where: { id: productId },include:{product_and_size:true} });
+  prisma.product.findFirst({
+    where: { id: productId },
+    include: { product_and_size: true },
+  });
+
+productService.updateProductById = (productId, name, description, details) =>
+  prisma.product.update({
+    where: { id: productId },
+    data: { name, description, details },
+  });
 
 module.exports = productService;

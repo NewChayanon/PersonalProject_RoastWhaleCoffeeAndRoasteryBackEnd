@@ -35,4 +35,13 @@ productAndSizeService.findProductId = (productAndSizeId) =>
     orderBy: { price: "asc" },
   });
 
+productAndSizeService.editProductCoffee = (coffee) => {
+  coffee.map(
+    async (el) =>
+      await prisma.product_and_size.update({
+        where: { id: el.id },
+        data: { price: el.price, stock: el.stock },
+      })
+  );
+};
 module.exports = productAndSizeService;

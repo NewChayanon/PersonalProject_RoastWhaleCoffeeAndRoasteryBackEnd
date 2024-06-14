@@ -1,7 +1,7 @@
 const express= require('express')
 const stockController = require('../controllers/stock-controller')
 const { authenticate } = require('../middlewares/authenticate')
-const { addProductValidator, updateOrderValidator } = require('../middlewares/validator')
+const { addProductValidator, updateOrderValidator, editValidator } = require('../middlewares/validator')
 const { isAdmin } = require('../middlewares/isAdmin')
 const stockRouter = express.Router()
 
@@ -19,5 +19,8 @@ stockRouter.post('/generate-server',authenticate,isAdmin,stockController.generat
 
 // fetch all order
 stockRouter.get('/order-list',authenticate,isAdmin,stockController.getAllOrder)
+
+// edit product
+stockRouter.patch('/edit-coffee-product',authenticate,editValidator,isAdmin,stockController.editCoffeeProduct)
 
 module.exports = stockRouter

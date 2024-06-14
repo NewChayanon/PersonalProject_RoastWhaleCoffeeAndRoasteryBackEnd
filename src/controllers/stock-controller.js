@@ -71,21 +71,37 @@ stockController.updateStatusOrder = async (req, res, next) => {
 stockController.generateServer = async (req, res, next) => {
   try {
     const { category, size } = req.body;
-    await categoryService.generateServer(category)
-    await sizeService.generateServer(size)
+    await categoryService.generateServer(category);
+    await sizeService.generateServer(size);
     res.status(200).json({ msg: "generate successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-stockController.getAllOrder = async (req,res,next) => {
+stockController.getAllOrder = async (req, res, next) => {
   try {
-    const allOrder = await orderService.fetchAllOrder()
-    res.json(allOrder)
+    const allOrder = await orderService.fetchAllOrder();
+    res.json(allOrder);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+stockController.editCoffeeProduct = async (req, res, next) => {
+  try {
+    const { id, name, description, details } = req.body;
+    const coffee = req.body.coffee;
+
+    const editCoffeeProductTableProduct =
+      await productService.updateProductById(id, name, description, details);
+
+    const editCoffeeProductTableProductAndSize =
+      await productAndSizeService.editProductCoffee(coffee);
+    res.json({ msg: "edit success" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = stockController;
