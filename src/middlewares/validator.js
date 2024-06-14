@@ -64,3 +64,12 @@ exports.updateOrderValidator = (req, res, next) => {
   req.order = value;
   next();
 };
+
+exports.paymentValidator = (req,res,next) => {
+  const { value, error } = payment.validate(req.body);
+  if (error) {
+    return res.status(400).json({ msg: error.details[0].message });
+  }
+  req.address = value;
+  next();
+}

@@ -13,7 +13,7 @@ exports.addProduct = Joi.object({
       stock: Joi.number().required(),
     })
   ),
-  tool:Joi.object().required(),
+  tool: Joi.object().required(),
   image: Joi.array().items(
     Joi.object({
       image: Joi.string(),
@@ -23,4 +23,11 @@ exports.addProduct = Joi.object({
 
 exports.updateStatusOrder = Joi.object({
   status: Joi.string().required().trim(),
+});
+
+exports.payment = Joi.object({
+  image: Joi.string().required(),
+  date: Joi.string().required(),
+  hour: Joi.string().required(),
+  minute: Joi.string().required(),
 });
