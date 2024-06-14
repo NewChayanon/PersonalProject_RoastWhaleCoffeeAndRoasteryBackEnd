@@ -9,7 +9,7 @@ userRouter.get('/users',authenticate,userController.getUser)
 // add product to cart - Authentication
 userRouter.post('/add-product/:productAndSizeId',authenticate,userController.addProductToCart)
 
-
+// quick-add
 userRouter.post('/quick-add-product/:productAndSizeId',authenticate,userController.quickAddProductToCart)
 
 // delete product in cart - Authentication

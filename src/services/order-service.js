@@ -17,10 +17,32 @@ orderService.createOrder = (addressId, cartId, data) =>
 orderService.shoppingList = (cartIdArray) =>
   prisma.order.findMany({
     where: { cart_id: { in: cartIdArray } },
-    include: { address: true, cart: true },
+    include: {
+      cart: {
+        include: {
+          cart_items: {
+            include: { product_and_size: { include: { product: true } } },
+          },
+        },
+      },
+    },
   });
 
 orderService.updateStatusOrder = (orderId, status) =>
   prisma.order.update({ where: { id: orderId }, data: { status: status } });
+
+orderService.fetchAllOrder = () =>
+  prisma.order.findMany({
+    include: {
+      address: true,
+      cart: {
+        include: {
+          cart_items: {
+            include: { product_and_size: { include: { product: true } } },
+          },
+        },
+      },
+    },
+  });
 
 module.exports = orderService;

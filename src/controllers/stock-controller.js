@@ -1,3 +1,4 @@
+const { all } = require("../routes/stock-route");
 const categoryService = require("../services/category-service");
 const orderService = require("../services/order-service");
 const productAndSizeService = require("../services/product-and-size-service");
@@ -77,5 +78,14 @@ stockController.generateServer = async (req, res, next) => {
     next(error);
   }
 };
+
+stockController.getAllOrder = async (req,res,next) => {
+  try {
+    const allOrder = await orderService.fetchAllOrder()
+    res.json(allOrder)
+  } catch (error) {
+    next(error)
+  }
+}
 
 module.exports = stockController;

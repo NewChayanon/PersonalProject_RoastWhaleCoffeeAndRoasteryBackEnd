@@ -5,6 +5,7 @@ const {
 const {
   addProduct,
   updateStatusOrder,
+  payment,
 } = require("./joi-validator.js/stock-validator");
 const { changeAddress } = require("./joi-validator.js/user-validator");
 
