@@ -5,7 +5,7 @@ const productController = {}
 productController.getCoffee = async (req,res,next) => {
     try {
         const coffee = await productService.getCoffee()
-        console.log(coffee)
+        // console.log(coffee)
         // const searchCoffeeId = await productService.searchCoffeeId(coffee.name)
         res.json({coffee})
     } catch (error) {
@@ -25,7 +25,6 @@ productController.getTool = async (req,res,next)=>{
 productController.fetchNewProduct = async (req,res,next) =>{
     try {
         const fetch = await productService.fetchNewProduct()
-        console.log(fetch)
         res.status(200).json({fetch})
     } catch (error) {
         next(error)

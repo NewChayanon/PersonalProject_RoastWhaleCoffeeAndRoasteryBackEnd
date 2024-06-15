@@ -26,6 +26,8 @@ productAndSizeService.prepareInfoTool = (tool, sizeId, productId) => {
   delete tool.size;
   tool["size_id"] = sizeId;
   tool["product_id"] = productId;
+  tool.price = +tool.price
+  tool.stock = +tool.stock
   return tool;
 };
 
@@ -40,8 +42,15 @@ productAndSizeService.editProductCoffee = (coffee) => {
     async (el) =>
       await prisma.product_and_size.update({
         where: { id: el.id },
-        data: { price: el.price, stock: el.stock },
+        data: { price: +el.price, stock: +el.stock },
       })
   );
 };
+
+productAndSizeService.editProductTool = (tool) =>
+  prisma.product_and_size.update({
+    where: { id: tool.id },
+    data: { price: +tool.price, stock: +tool.stock },
+  });
+
 module.exports = productAndSizeService;

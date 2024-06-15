@@ -8,16 +8,20 @@ const { notFoundMiddleware } = require("./src/middlewares/not-found");
 const errorMiddleware = require("./src/middlewares/error");
 const productRouter = require("./src/routes/product-route");
 const morgan = require("morgan");
+const { authenticate } = require("./src/middlewares/authenticate");
+const { isAdmin } = require("./src/middlewares/isAdmin");
 const app = express();
 
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use("/public/images",express.static("public/images"));
+
 app.use(express.json());
 
 app.use(authRouter);
 app.use(userRouter);
-app.use("/admin", stockRouter);
+app.use("/admin", authenticate,isAdmin,stockRouter);
 app.use("/users", userRouter);
 app.use("/product", productRouter);
 

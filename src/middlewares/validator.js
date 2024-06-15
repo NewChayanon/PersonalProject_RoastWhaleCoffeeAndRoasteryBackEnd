@@ -38,7 +38,7 @@ exports.addProductValidator = (req, res, next) => {
   if (category !== "coffee" && category !== "tool") {
     return res.status(400).json({ msg: "category invalid" });
   }
-
+  
   req.input = value;
   next();
 };
@@ -79,7 +79,9 @@ exports.paymentValidator = (req,res,next) => {
 
 // edit product
 exports.editValidator = (req, res, next) => {
+  
   const { value, error } = editProduct.validate(req.body);
+  
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
@@ -89,5 +91,12 @@ exports.editValidator = (req, res, next) => {
   }
 
   req.input = value;
+  next();
+};
+
+exports.addProductImageValidator = (req, res, next) => {
+  if (!req.file) {
+    res.status(400).json({msg:"at least one of profile or cover image"})
+  }
   next();
 };

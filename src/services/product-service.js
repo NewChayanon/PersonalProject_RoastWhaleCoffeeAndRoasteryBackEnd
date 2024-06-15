@@ -6,12 +6,18 @@ const productService = {};
 //  fetch all coffee
 productService.getCoffee = () =>
   prisma.product.findMany({
-    where: { category_id: 1 },
-    include: { product_and_size: { include: { size: true } } },
+    where: { AND: [{ category_id: 1 }, { is_delete: false }] },
+    include: {
+      image: { orderBy: { created_at: "desc" } },
+      product_and_size: { include: { size: true } },
+    },
   });
 
 productService.getTool = () =>
-  prisma.product.findMany({ where: { category_id: 2 } });
+  prisma.product.findMany({
+    where: { AND: [{ category_id: 2 }, { is_delete: false }] },
+    include: { product_and_size: { include: { size: true } } },
+  });
 
 productService.searchCoffeeId = (coffeeName) => prisma.product.findFirst({});
 
@@ -26,11 +32,8 @@ productService.addProduct = (data) =>
     },
   });
 
-productService.addImage = (data, product_id) =>
-  data.map(
-    async (el) =>
-      await prisma.image.create({ data: { image: el.image, product_id } })
-  );
+productService.addImage = (productImage, product_id) =>
+  prisma.image.create({ data: { image: productImage, product_id } });
 
 productService.deleteProduct = (productId) =>
   prisma.product.update({
@@ -41,9 +44,14 @@ productService.deleteProduct = (productId) =>
 // fetch new product
 productService.fetchNewProduct = () =>
   prisma.product.findMany({
+    where: { is_delete: false },
     orderBy: { created_at: "desc" },
     take: 4,
-    include: { image: true },
+    include: {
+      image: true,
+      category: true,
+      product_and_size: { include: { size: true } },
+    },
   });
 
 // fetch popular product

@@ -47,10 +47,10 @@ exports.editProduct = Joi.object({
       stock: Joi.number().required(),
     })
   ),
-  tool: Joi.object().required(),
-  image: Joi.array().items(
-    Joi.object({
-      image: Joi.string(),
-    })
-  ),
+  tool: Joi.object({
+    id:Joi.number(),
+    size: Joi.string(),
+    price: Joi.number(),
+    stock: Joi.number(),
+  }),
 });
