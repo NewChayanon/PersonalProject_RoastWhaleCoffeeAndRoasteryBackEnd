@@ -1,7 +1,8 @@
 const express = require('express')
 const { authenticate } = require('../middlewares/authenticate')
 const userController = require('../controllers/user-controller')
-const { changeAddressValidator, paymentValidator } = require('../middlewares/validator')
+const { changeAddressValidator, paymentValidator, addProductImageValidator } = require('../middlewares/validator')
+const upload = require('../middlewares/upload')
 const userRouter = express.Router()
 
 userRouter.get('/users',authenticate,userController.getUser)
@@ -20,6 +21,9 @@ userRouter.post('/address',authenticate,changeAddressValidator,userController.ch
 
 // create order - Authentication
 userRouter.post('/check-out',authenticate,paymentValidator,userController.CreateOrder)
+
+// create order - update payment image
+userRouter.patch('/payment',authenticate,upload.single("paymentImage"),addProductImageValidator,userController.updatePaymentImage)
 
 // check status order - Authentication
 userRouter.get('/shopping-list',authenticate,userController.fetchShoppingList)

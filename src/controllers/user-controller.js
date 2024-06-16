@@ -165,11 +165,25 @@ userController.CreateOrder = async (req, res, next) => {
 
     // create order
     const order = await orderService.createOrder(addressId.id, cartId.id, body);
-    res.status(200).json({ order });
+    res.status(200).json(order);
   } catch (error) {
     next(error);
   }
 };
+
+userController.updatePaymentImage = async (req,res,next)=>{
+  try {
+    const paymentImage = req.file.path
+    const orderId = +req.body.orderId
+    const updatePayment = await orderService.updatePaymentImage(orderId,paymentImage)
+
+    console.log(paymentImage,orderId)
+    console.log("------->",updatePayment)
+    res.status(200).json(paymentImage)
+  } catch (error) {
+    next(error)
+  }
+}
 
 // check status order user
 userController.fetchShoppingList = async (req, res, next) => {
@@ -200,7 +214,7 @@ userController.cartUser = async (req, res, next) => {
     const cartItemUser = await cartItemService.findCartItemByCartId(
       cartUser.id
     );
-    
+
     res.status(200).json(cartItemUser);
   } catch (error) {}
 };

@@ -16,7 +16,10 @@ productService.getCoffee = () =>
 productService.getTool = () =>
   prisma.product.findMany({
     where: { AND: [{ category_id: 2 }, { is_delete: false }] },
-    include: { product_and_size: { include: { size: true } } },
+    include: {
+      image: { orderBy: { created_at: "desc" } },
+      product_and_size: { include: { size: true } },
+    },
   });
 
 productService.searchCoffeeId = (coffeeName) => prisma.product.findFirst({});
@@ -48,7 +51,7 @@ productService.fetchNewProduct = () =>
     orderBy: { created_at: "desc" },
     take: 4,
     include: {
-      image: true,
+      image: {orderBy:{created_at:"desc"}},
       category: true,
       product_and_size: { include: { size: true } },
     },

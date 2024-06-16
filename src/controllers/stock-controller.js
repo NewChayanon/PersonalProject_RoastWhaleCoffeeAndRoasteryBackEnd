@@ -12,6 +12,7 @@ stockController.addProductImage = async (req,res,next) => {
     const productImage = req.file.path
     const productId = +req.body.productId
     const image = await productService.addImage(productImage, productId);
+    console.log(productImage)
     res.status(201).json(image);
   } catch (error) {
     next(error)

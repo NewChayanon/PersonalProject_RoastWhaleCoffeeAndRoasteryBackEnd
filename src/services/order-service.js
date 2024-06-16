@@ -14,6 +14,12 @@ orderService.createOrder = (addressId, cartId, data) =>
     },
   });
 
+orderService.updatePaymentImage = (orderId, paymentImage) =>
+  prisma.order.update({
+    where: { id: orderId },
+    data: { image: paymentImage },
+  });
+
 orderService.shoppingList = (cartIdArray) =>
   prisma.order.findMany({
     where: { cart_id: { in: cartIdArray } },
