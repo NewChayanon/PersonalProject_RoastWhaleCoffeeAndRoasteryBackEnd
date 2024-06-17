@@ -13,16 +13,15 @@ const { isAdmin } = require("./src/middlewares/isAdmin");
 const app = express();
 
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
-app.use("/public/images",express.static("public/images"));
+app.use("/public/images", express.static("public/images"));
 
 app.use(express.json());
 
 app.use(authRouter);
-app.use(userRouter);
-app.use("/admin", authenticate,isAdmin,stockRouter);
-app.use("/users", userRouter);
+app.use("/admin", authenticate, isAdmin, stockRouter);
+app.use("/users", authenticate, userRouter);
 app.use("/product", productRouter);
 
 app.use(notFoundMiddleware);

@@ -15,6 +15,6 @@ productRouter.get("/new",productController.fetchNewProduct)
 productRouter.get("/popular",productController.fetchPopularProduct)
 
 // fetch info product
-productRouter.get('/coffee/:productId',productController.fetchInfoProduct)
+productRouter.get('/:productId',productController.fetchInfoProduct)
 
 module.exports = productRouter

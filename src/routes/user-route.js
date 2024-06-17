@@ -5,30 +5,31 @@ const { changeAddressValidator, paymentValidator, addProductImageValidator } = r
 const upload = require('../middlewares/upload')
 const userRouter = express.Router()
 
-userRouter.get('/users',authenticate,userController.getUser)
+// get user (Pass)
+userRouter.get('/', userController.getUser)
 
-// add product to cart - Authentication
-userRouter.post('/add-product/:productAndSizeId',authenticate,userController.addProductToCart)
+// add product to cart - Authentication (Pass)
+userRouter.post('/add-product/:productAndSizeId', userController.addProductToCart)
 
-// quick-add
-userRouter.post('/quick-add-product/:productAndSizeId',authenticate,userController.quickAddProductToCart)
+// quick-add (Pass)
+userRouter.post('/quick-add-product/:productAndSizeId', userController.quickAddProductToCart)
 
-// delete product in cart - Authentication
-userRouter.delete('/remove/:cartItemId',authenticate,userController.deleteProductToCart)
+// delete product in cart - Authentication (Pass)
+userRouter.delete('/remove/:cartItemId', userController.deleteProductToCart)
 
-// change address - Validation /Authentication
-userRouter.post('/address',authenticate,changeAddressValidator,userController.changeAddress)
+// change address - Validation /Authentication (Pass)
+userRouter.post('/address', changeAddressValidator, userController.changeAddress)
 
-// create order - Authentication
-userRouter.post('/check-out',authenticate,paymentValidator,userController.CreateOrder)
+// create order - Authentication (Pass)
+userRouter.post('/check-out', paymentValidator, userController.CreateOrder)
 
-// create order - update payment image
-userRouter.patch('/payment',authenticate,upload.single("paymentImage"),addProductImageValidator,userController.updatePaymentImage)
+// create order - update payment image (Pass)
+userRouter.patch('/payment', upload.single("paymentImage"), addProductImageValidator, userController.updatePaymentImage)
 
-// check status order - Authentication
-userRouter.get('/shopping-list',authenticate,userController.fetchShoppingList)
+// check status order - Authentication (Pass)
+userRouter.get('/shopping-list', userController.fetchShoppingList)
 
-// fetch cart user
-userRouter.get("/cart",authenticate,userController.cartUser)
+// fetch cart user (Pass)
+userRouter.get("/cart", userController.cartUser)
 
 module.exports = userRouter

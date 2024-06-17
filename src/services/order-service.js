@@ -27,7 +27,11 @@ orderService.shoppingList = (cartIdArray) =>
       cart: {
         include: {
           cart_items: {
-            include: { product_and_size: { include: { product: true } } },
+            include: {
+              product_and_size: {
+                include: { product: { include: { image: true } } },
+              },
+            },
           },
         },
       },

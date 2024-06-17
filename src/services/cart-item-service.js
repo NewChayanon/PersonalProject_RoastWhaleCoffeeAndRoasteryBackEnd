@@ -42,7 +42,7 @@ cartItemService.findCartItemByCartId = (cartId) =>
     include: {
       product_and_size: {
         include: {
-          product: { include: { image: true } },
+          product: { include: { image: { orderBy: { created_at: "desc" } } } },
         },
       },
     },

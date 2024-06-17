@@ -51,7 +51,7 @@ productService.fetchNewProduct = () =>
     orderBy: { created_at: "desc" },
     take: 4,
     include: {
-      image: {orderBy:{created_at:"desc"}},
+      image: { orderBy: { created_at: "desc" } },
       category: true,
       product_and_size: { include: { size: true } },
     },
@@ -69,7 +69,10 @@ productService.fetchPopularProduct = () =>
 productService.fetchInfoProduct = (productId) =>
   prisma.product.findFirst({
     where: { id: productId },
-    include: { product_and_size: true },
+    include: {
+      image: { orderBy: { created_at: "desc" }, take: 1 },
+      product_and_size: { include: { size: true } },
+    },
   });
 
 productService.updateProductById = (productId, name, description, details) =>
