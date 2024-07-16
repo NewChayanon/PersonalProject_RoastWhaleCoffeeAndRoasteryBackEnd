@@ -11,10 +11,8 @@ cartService.checkStatus = (userId) =>
     where: { AND: [{ user_id: userId }, { is_delete: true }] },
   });
 
-cartService.createCart = (userId) =>
-  prisma.cart.create({ data: { user_id: userId } });
+cartService.createCart = (userId) => prisma.cart.create({ data: { user_id: userId } });
 
-cartService.isDelete = (cartId) =>
-  prisma.cart.update({ where: { id: cartId }, data: { is_delete: true } });
+cartService.isDelete = (cartId) => prisma.cart.update({ where: { id: cartId }, data: { is_delete: true } });
 
 module.exports = cartService;

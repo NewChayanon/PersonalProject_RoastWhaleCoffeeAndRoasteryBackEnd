@@ -1,20 +1,11 @@
-const express = require('express')
-const productController = require('../controllers/product-controller')
-const productRouter = express.Router()
+const express = require("express");
+const productController = require("../controllers/product-controller");
+const productRouter = express.Router();
 
-//  fetch all coffee
-productRouter.get('/coffee',productController.getCoffee)
+productRouter.get("/coffee", productController.getCoffee);
+productRouter.get("/tool", productController.getTool);
+productRouter.get("/new", productController.getNewProduct);
+productRouter.get("/popular", productController.getPopularProduct);
+productRouter.get("/:productId", productController.getInfoProduct);
 
-// fetch all tool
-productRouter.get('/tool',productController.getTool)
-
-//  fetch new product
-productRouter.get("/new",productController.fetchNewProduct)
-
-// fetch popular product
-productRouter.get("/popular",productController.fetchPopularProduct)
-
-// fetch info product
-productRouter.get('/:productId',productController.fetchInfoProduct)
-
-module.exports = productRouter
+module.exports = productRouter;

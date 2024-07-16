@@ -26,8 +26,8 @@ productAndSizeService.prepareInfoTool = (tool, sizeId, productId) => {
   delete tool.size;
   tool["size_id"] = sizeId;
   tool["product_id"] = productId;
-  tool.price = +tool.price
-  tool.stock = +tool.stock
+  tool.price = +tool.price;
+  tool.stock = +tool.stock;
   return tool;
 };
 

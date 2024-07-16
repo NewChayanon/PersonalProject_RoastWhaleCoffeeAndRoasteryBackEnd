@@ -23,8 +23,7 @@ sizeService.searchSizeCoffee = (coffee) => {
   return prisma.size.findMany({ where: { size: { in: coffeeArray } } });
 };
 
-sizeService.searchSizeTool = (tool) =>
-  prisma.size.findFirst({ where: { size: tool.size } });
+sizeService.searchSizeTool = (tool) => prisma.size.findFirst({ where: { size: tool.size } });
 
 sizeService.generateServer = (size) => prisma.size.createMany({ data: size });
 module.exports = sizeService;

@@ -35,8 +35,7 @@ productService.addProduct = (data) =>
     },
   });
 
-productService.addImage = (productImage, product_id) =>
-  prisma.image.create({ data: { image: productImage, product_id } });
+productService.addImage = (productImage, product_id) => prisma.image.create({ data: { image: productImage, product_id } });
 
 productService.deleteProduct = (productId) =>
   prisma.product.update({

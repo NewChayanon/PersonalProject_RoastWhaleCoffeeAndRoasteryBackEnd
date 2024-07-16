@@ -38,8 +38,7 @@ orderService.shoppingList = (cartIdArray) =>
     },
   });
 
-orderService.updateStatusOrder = (orderId, status) =>
-  prisma.order.update({ where: { id: orderId }, data: { status: status } });
+orderService.updateStatusOrder = (orderId, status) => prisma.order.update({ where: { id: orderId }, data: { status: status } });
 
 orderService.fetchAllOrder = () =>
   prisma.order.findMany({

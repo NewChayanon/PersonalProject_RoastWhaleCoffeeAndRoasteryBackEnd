@@ -7,51 +7,39 @@ const sizeService = require("../services/size-service");
 
 const stockController = {};
 
-stockController.addProductImage = async (req,res,next) => {
+stockController.addProductImage = async (req, res, next) => {
   try {
-    const productImage = req.file.path
-    const productId = +req.body.productId
+    const productImage = req.file.path;
+    const productId = +req.body.productId;
     const image = await productService.addImage(productImage, productId);
-    console.log(productImage)
+    console.log(productImage);
     res.status(201).json(image);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 stockController.addProduct = async (req, res, next) => {
   try {
     const data = req.input;
     const { category, coffee, tool } = req.input;
-    console.log(data)
+    console.log(data);
     const categoryId = await categoryService.searchCategory(category);
     data.categoryId = categoryId.id;
     const product = await productService.addProduct(data);
 
     if (category === "coffee") {
       const sizeIdCoffee = await sizeService.searchSizeCoffee(coffee);
-      const prepareInfoCoffee = await productAndSizeService.prepareInfoCoffee(
-        coffee,
-        sizeIdCoffee,
-        product.id
-      );
-      const productAndSize = await productAndSizeService.addProduct(
-        prepareInfoCoffee
-      );
+      const prepareInfoCoffee = await productAndSizeService.prepareInfoCoffee(coffee, sizeIdCoffee, product.id);
+      const productAndSize = await productAndSizeService.addProduct(prepareInfoCoffee);
     }
     if (category === "tool") {
       const sizeIdTool = await sizeService.searchSizeTool(tool);
-      const prepareInfoTool = await productAndSizeService.prepareInfoTool(
-        tool,
-        sizeIdTool.id,
-        product.id
-      );
-      console.log(prepareInfoTool)
-      const productAndSize = await productAndSizeService.addProduct(
-        prepareInfoTool
-      );
+      const prepareInfoTool = await productAndSizeService.prepareInfoTool(tool, sizeIdTool.id, product.id);
+      console.log(prepareInfoTool);
+      const productAndSize = await productAndSizeService.addProduct(prepareInfoTool);
     }
-    
+
     res.status(201).json(product);
   } catch (error) {
     console.log(error);
@@ -103,19 +91,18 @@ stockController.getAllOrder = async (req, res, next) => {
 
 stockController.editCoffeeProduct = async (req, res, next) => {
   try {
-    console.log(req.body)
-    const { id, name, description, details,category } = req.body;
+    console.log(req.body);
+    const { id, name, description, details, category } = req.body;
     const coffee = req.body.coffee;
-    const tool = req.body.tool
-    console.log(id, name, description, details)
-    const editCoffeeProductTableProduct =
-      await productService.updateProductById(id, name, description, details);
+    const tool = req.body.tool;
+    console.log(id, name, description, details);
+    const editCoffeeProductTableProduct = await productService.updateProductById(id, name, description, details);
 
-      if (category=="coffee") {
-        const editCoffeeProductTableProductAndSize = await productAndSizeService.editProductCoffee(coffee);
-      } else {
-        const editToolProductTableProductAndSize = await productAndSizeService.editProductTool(tool)
-      }
+    if (category == "coffee") {
+      const editCoffeeProductTableProductAndSize = await productAndSizeService.editProductCoffee(coffee);
+    } else {
+      const editToolProductTableProductAndSize = await productAndSizeService.editProductTool(tool);
+    }
     res.json({ msg: "edit success" });
   } catch (error) {
     next(error);
