@@ -12,7 +12,7 @@ stockController.addProductImage = async (req, res, next) => {
     const productImage = req.file.path;
     const productId = +req.body.productId;
     const image = await productService.addImage(productImage, productId);
-    console.log(productImage);
+
     res.status(201).json(image);
   } catch (error) {
     next(error);
@@ -23,7 +23,7 @@ stockController.addProduct = async (req, res, next) => {
   try {
     const data = req.input;
     const { category, coffee, tool } = req.input;
-    console.log(data);
+
     const categoryId = await categoryService.searchCategory(category);
     data.categoryId = categoryId.id;
     const product = await productService.addProduct(data);
@@ -36,13 +36,12 @@ stockController.addProduct = async (req, res, next) => {
     if (category === "tool") {
       const sizeIdTool = await sizeService.searchSizeTool(tool);
       const prepareInfoTool = await productAndSizeService.prepareInfoTool(tool, sizeIdTool.id, product.id);
-      console.log(prepareInfoTool);
+
       const productAndSize = await productAndSizeService.addProduct(prepareInfoTool);
     }
 
     res.status(201).json(product);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -51,7 +50,7 @@ stockController.deleteProduct = async (req, res, next) => {
   try {
     const productId = +req.params.productId;
     const isDelete = await productService.deleteProduct(productId);
-    console.log(isDelete);
+
     res.json({ msg: "delete successfully" });
   } catch (error) {
     next(error);
@@ -91,11 +90,10 @@ stockController.getAllOrder = async (req, res, next) => {
 
 stockController.editCoffeeProduct = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { id, name, description, details, category } = req.body;
     const coffee = req.body.coffee;
     const tool = req.body.tool;
-    console.log(id, name, description, details);
+    
     const editCoffeeProductTableProduct = await productService.updateProductById(id, name, description, details);
 
     if (category == "coffee") {

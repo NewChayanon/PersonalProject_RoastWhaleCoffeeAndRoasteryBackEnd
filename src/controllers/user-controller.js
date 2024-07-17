@@ -61,7 +61,10 @@ userController.quickAddProductToCart = async (req, res, next) => {
       if (!haveProductAndSize) {
         const addProductToCart = await cartItemService.addProductToCartItem(haveCart.id, minSize, updateQuantity);
       } else {
-        const updateProductInCartItem = await cartItemService.updateProductInCartItem(updateQuantity, haveProductAndSize.id);
+        const updateProductInCartItem = await cartItemService.updateProductInCartItem(
+          updateQuantity,
+          haveProductAndSize.id
+        );
       }
     }
 
@@ -136,8 +139,6 @@ userController.updatePaymentImage = async (req, res, next) => {
     const orderId = +req.body.orderId;
     const updatePayment = await orderService.updatePaymentImage(orderId, paymentImage);
 
-    console.log(paymentImage, orderId);
-    console.log("------->", updatePayment);
     res.status(200).json(paymentImage);
   } catch (error) {
     next(error);

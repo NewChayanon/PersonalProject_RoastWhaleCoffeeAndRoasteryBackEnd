@@ -20,7 +20,7 @@ exports.authenticate = async (req, res, next) => {
     req.user = searchUser;
     next();
   } catch (error) {
-    console.log(error);
+    
     next(error);
   }
 };

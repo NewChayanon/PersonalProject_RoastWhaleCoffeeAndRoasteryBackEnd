@@ -4,7 +4,7 @@ const sizeService = {};
 
 sizeService.addProduct = (data) => {
   const { category, coffee, tool } = data;
-  //   console.log(category, coffee, tool);
+
   if (category === "coffee") {
     const coffeeArray = coffee.map((el) => {
       obj = {};
