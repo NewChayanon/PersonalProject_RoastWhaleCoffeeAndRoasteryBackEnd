@@ -1,13 +1,5 @@
-const {
-  registerSchema,
-  loginSchema,
-} = require("./joi-validator.js/auth-validator");
-const {
-  addProduct,
-  updateStatusOrder,
-  payment,
-  editProduct,
-} = require("./joi-validator.js/stock-validator");
+const { registerSchema, loginSchema } = require("./joi-validator.js/auth-validator");
+const { addProduct, updateStatusOrder, payment, editProduct } = require("./joi-validator.js/stock-validator");
 const { changeAddress } = require("./joi-validator.js/user-validator");
 
 exports.registerValidator = (req, res, next) => {
@@ -38,7 +30,7 @@ exports.addProductValidator = (req, res, next) => {
   if (category !== "coffee" && category !== "tool") {
     return res.status(400).json({ msg: "category invalid" });
   }
-  
+
   req.input = value;
   next();
 };
@@ -68,20 +60,19 @@ exports.updateOrderValidator = (req, res, next) => {
   next();
 };
 
-exports.paymentValidator = (req,res,next) => {
+exports.paymentValidator = (req, res, next) => {
   const { value, error } = payment.validate(req.body);
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
   req.address = value;
   next();
-}
+};
 
 // edit product
 exports.editValidator = (req, res, next) => {
-  
   const { value, error } = editProduct.validate(req.body);
-  
+
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
@@ -96,7 +87,7 @@ exports.editValidator = (req, res, next) => {
 
 exports.addProductImageValidator = (req, res, next) => {
   if (!req.file) {
-    res.status(400).json({msg:"at least one of profile or cover image"})
+    res.status(400).json({ msg: "at least one of profile or cover image" });
   }
   next();
 };

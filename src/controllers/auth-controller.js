@@ -42,4 +42,15 @@ authController.login = async (req, res, next) => {
   }
 };
 
+authController.googleLogin = (req, res, next) => {
+  try {
+    console.log(req)
+    const accessToken = jwtService.createToken({ id: req.user.id });
+    const encoded = encodeURIComponent(accessToken);
+    res.redirect(`http://localhost:${process.env.PORT_FRONT_END || 5173}/?token=${encoded}`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = authController;

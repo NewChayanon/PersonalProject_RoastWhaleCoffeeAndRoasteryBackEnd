@@ -39,7 +39,6 @@ addressService.findAddressId = (userId) =>
     take: 1,
   });
 
-
 addressService.statusOrder = (userId) => prisma.address.findMany({ where: { user_id: userId }, include: { order: true } });
 
 module.exports = addressService;

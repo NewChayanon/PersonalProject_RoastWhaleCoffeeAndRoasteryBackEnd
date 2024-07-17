@@ -14,14 +14,20 @@ datasource db {
 }
 
 model user {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique @db.VarChar(50)
-  password   String    @db.VarChar(256)
-  is_admin   Boolean   @default(false)
-  created_at DateTime  @default(now()) @db.Timestamp(0)
-  updated_at DateTime  @updatedAt @db.Timestamp(0)
-  address    address[]
-  cart       cart[]
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar(50)
+  password      String   @db.VarChar(256)
+  first_name    String?   @default("user-firstName")
+  last_name     String?   @default("user-lastName")
+  display_name  String?   @default("user-displayName")
+  profile_image String?   @db.Text
+  google_id     String?
+  is_admin      Boolean  @default(false)
+  created_at    DateTime @default(now()) @db.Timestamp(0)
+  updated_at    DateTime @updatedAt @db.Timestamp(0)
+
+  address address[]
+  cart    cart[]
 }
 
 model address {
@@ -43,7 +49,7 @@ model address {
 
 model category {
   id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(50) @unique
+  name    String    @unique @db.VarChar(50)
   product product[]
 }
 
@@ -65,7 +71,7 @@ model product {
 
 model size {
   id               Int                @id @default(autoincrement())
-  size             size_type @unique
+  size             size_type          @unique
   product_and_size product_and_size[]
 }
 
