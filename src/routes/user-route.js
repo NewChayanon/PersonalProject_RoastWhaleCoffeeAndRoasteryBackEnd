@@ -12,22 +12,22 @@ userRouter.get('/', userController.getUser)
 userRouter.post('/add-product/:productAndSizeId', userController.addProductToCart)
 
 // quick-add (Pass)
-userRouter.post('/quick-add-product/:productAndSizeId', userController.quickAddProductToCart)
+userRouter.post('/cart/products/:productAndSizeId/quick-add', userController.quickAddProductToCart)
 
 // delete product in cart - Authentication (Pass)
-userRouter.delete('/remove/:cartItemId', userController.deleteProductToCart)
+userRouter.delete('/cart/products/:cartItemId', userController.deleteProductToCart)
 
 // change address - Validation /Authentication (Pass)
 userRouter.post('/address', changeAddressValidator, userController.changeAddress)
 
 // create order - Authentication (Pass)
-userRouter.post('/check-out', paymentValidator, userController.CreateOrder)
+userRouter.post('/checkout', paymentValidator, userController.CreateOrder)
 
 // create order - update payment image (Pass)
 userRouter.patch('/payment', upload.single("paymentImage"), addProductImageValidator, userController.updatePaymentImage)
 
 // check status order - Authentication (Pass)
-userRouter.get('/shopping-list', userController.fetchShoppingList)
+userRouter.get('/orders', userController.fetchShoppingList)
 
 // fetch cart user (Pass)
 userRouter.get("/cart", userController.cartUser)

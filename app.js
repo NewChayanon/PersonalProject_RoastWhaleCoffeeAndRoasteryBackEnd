@@ -25,10 +25,10 @@ app.use("/public/images", express.static("public/images"));
 
 app.use(express.json());
 
-app.use(authRouter);
+app.use("/auth",authRouter);
 app.use("/admin", authenticate, isAdmin, stockRouter);
 app.use("/users", authenticate, userRouter);
-app.use("/product", productRouter);
+app.use("/products", productRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
