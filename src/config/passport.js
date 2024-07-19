@@ -2,23 +2,24 @@ const passport = require("passport");
 const userService = require("../services/user-service");
 const hashService = require("../services/hash-service");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const url = require('url');
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `http://localhost:${process.env.PORT_BACK_END || 8888}/auth/google/callback`,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (token, tokenSecret, profile, done) => {
       try {
         const { email, given_name: first_name, family_name: last_name, picture: profile_image } = profile._json;
         let user = await userService.findEmail(email);
-        
+      
         if (!user) {
           const data = {
             email,
-            password:await hashService.hash(profile.id),
+            password: await hashService.hash(profile.id),
             first_name,
             last_name,
             display_name: profile.displayName,
