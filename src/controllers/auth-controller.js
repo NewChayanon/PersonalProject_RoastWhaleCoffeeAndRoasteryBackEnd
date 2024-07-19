@@ -18,7 +18,6 @@ authController.register = async (req, res, next) => {
     await userService.createUser(data);
     res.status(201).json({ msg: "Register Success" });
   } catch (error) {
-    
     next(error);
   }
 };
@@ -37,14 +36,12 @@ authController.login = async (req, res, next) => {
     const accessToken = jwtService.createToken({ id: searchEmail.id });
     res.json({ accessToken });
   } catch (error) {
-    
     next(error);
   }
 };
 
 authController.googleLogin = (req, res, next) => {
   try {
-    
     const accessToken = jwtService.createToken({ id: req.user.id });
     const encoded = encodeURIComponent(accessToken);
     res.redirect(`${process.env.GOOGLE_REDIRECT}/?token=${encoded}`);
