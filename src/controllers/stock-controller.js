@@ -4,6 +4,7 @@ const orderService = require("../services/order-service");
 const productAndSizeService = require("../services/product-and-size-service");
 const productService = require("../services/product-service");
 const sizeService = require("../services/size-service");
+const uploadService = require("../services/upload-service");
 
 const stockController = {};
 
@@ -11,7 +12,10 @@ stockController.addProductImage = async (req, res, next) => {
   try {
     const productImage = req.file.path;
     const productId = +req.body.productId;
-    const image = await productService.addImage(productImage, productId);
+
+    const urlCloudinary = await uploadService.upload(productImage);
+
+    const image = await productService.addImage(urlCloudinary, productId);
 
     res.status(201).json(image);
   } catch (error) {
