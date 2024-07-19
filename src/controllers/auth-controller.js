@@ -47,7 +47,7 @@ authController.googleLogin = (req, res, next) => {
     
     const accessToken = jwtService.createToken({ id: req.user.id });
     const encoded = encodeURIComponent(accessToken);
-    res.redirect(`http://localhost:${process.env.PORT_FRONT_END || 5173}/?token=${encoded}`);
+    res.redirect(`${process.env.GOOGLE_REDIRECT}/?token=${encoded}`);
   } catch (error) {
     next(error);
   }
